@@ -1,24 +1,22 @@
 #!/usr/bin/python3
-"""make a tarball of web_static files"""
-from fabric.api import local, task, settings
+# Fabfile to generates a .tgz archive from the contents of web_static.
+import os.path
 from datetime import datetime
-import os
+from fabric.api import local
 
 
-@task
 def do_pack():
-    """make a tar archive"""
-    try:
-        date = datetime.now().strftime("%Y%m%d%H%M%S")
-        if os.path.isdir("versions") is False:
-            local("mkdir versions")
-        local('rm -rf git_folder')
-        local('git clone https://github.com/Masterprecie/AirBnB_clone_v2 git_folder')
-        local('cp -r git_folder/web_static .')
-        local('rm -rf git_folder')
-        file_name = "versions/web_static_{}.tgz".format(date)
-        local("tar -cvzf {} web_static".format(file_name))
-        local('rm -rf web_static')
-        return file_name
-    except Exception:
+    """Create a tar gzipped archive of the directory web_static."""
+    dt = datetime.utcnow()
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
+                                                         dt.month,
+                                                         dt.day,
+                                                         dt.hour,
+                                                         dt.minute,
+                                                         dt.second)
+    if os.path.isdir("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
+    return file
