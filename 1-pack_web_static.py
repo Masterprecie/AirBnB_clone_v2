@@ -13,7 +13,7 @@ def do_pack():
         if os.path.isdir("versions") is False:
             local("mkdir versions")
         local('rm -rf git_folder')
-        local('git clone https://github.com/wisdom209/AirBnB_clone git_folder')
+        local('git clone https://github.com/Masterprecie/AirBnB_clone_v2 git_folder')
         local('cp -r git_folder/web_static .')
         local('rm -rf git_folder')
         file_name = "versions/web_static_{}.tgz".format(date)
