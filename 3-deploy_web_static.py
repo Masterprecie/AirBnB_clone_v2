@@ -73,7 +73,3 @@ def deploy():
     if file is None:
         return False
     return do_deploy(file)
-
-
-
-
